@@ -1,5 +1,3 @@
-require 'puppet'
-
 if File.exists?('/usr/sbin/lldpctl')
   lldp = Hash.new
   `lldpctl -f keyvalue`.split(/\n/).each do |line|
