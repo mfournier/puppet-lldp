@@ -38,6 +38,10 @@ class lldp {
 
   package { 'lldpd':
     ensure => present,
+    name   => $::operatingsystem ? {
+      /RedHat|CentOS/ => "lldpd.${::architecture}",
+      default         => 'lldpd',
+    },
   }
 
   service { 'lldpd':
