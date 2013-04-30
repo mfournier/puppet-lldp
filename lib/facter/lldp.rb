@@ -13,7 +13,7 @@ if File.exists?('/usr/sbin/lldpctl')
     lldp_keys.each do |lldp_key|
       fact_string = "lldp.#{interface}.#{lldp_key}"
       if lldp.has_key?(fact_string)
-        Facter.add(fact_string.gsub('.', '_')) do
+        Facter.add(fact_string.gsub(/([.-])/, '_')) do
           setcode do
             lldp[fact_string].join(',')
           end
