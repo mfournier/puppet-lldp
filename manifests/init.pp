@@ -48,5 +48,6 @@ class lldp {
     ensure  => running,
     enable  => true,
     require => Package['lldpd'],
+    hasstatus => false,
   }
 }
