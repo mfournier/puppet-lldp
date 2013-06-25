@@ -3,35 +3,42 @@
 # Installs and runs lldpd + adds facts returning vlan & switch port
 # information
 #
+# [*package_source*]
+#   Set to 'vbernat' to not use default packages but load lldp from vbernat's private repo.
+#
 # === Examples
 #
 #   include lldp
 #
-class lldp {
+class lldp ($package_source = '') {
+  if $package_source == 'vbernat' {
+    $baseurl = 'http://widehat.opensuse.org/repositories/home:/vbernat/'
 
-  $baseurl = 'http://widehat.opensuse.org/repositories/home:/vbernat/'
+    case $::operatingsystem {
+      /RedHat|CentOS/ : {
+        $repourl = "${baseurl}/RedHat_RHEL-${::lsbmajdistrelease}"
 
-  case $::operatingsystem {
-    /RedHat|CentOS/: {
-      $repourl = "${baseurl}/RedHat_RHEL-${::lsbmajdistrelease}"
-      yumrepo { 'lldp':
-        baseurl     => $repourl,
-        descr       => 'lldp package from vbernat',
-        enabled     => 1,
-        gpgcheck    => 1,
-        gpgkey      => "${repourl}/repodata/repomd.xml.key",
-        includepkgs => 'lldpd',
+        yumrepo { 'lldp':
+          baseurl     => $repourl,
+          descr       => 'lldp package from vbernat',
+          enabled     => 1,
+          gpgcheck    => 1,
+          gpgkey      => "${repourl}/repodata/repomd.xml.key",
+          includepkgs => 'lldpd',
+        }
       }
-    }
-    /Debian/: {
-      $repourl = "${baseurl}/Debian_${::lsbmajdistrelease}.0"
-      apt::key { '72E0A4F6':
-        ensure => present,
-        source => "${repourl}/Release.key",
-      }
-      apt::sources_list { 'lldp':
-        ensure  => present,
-        content => "deb ${repourl}",
+      /Debian/        : {
+        $repourl = "${baseurl}/Debian_${::lsbmajdistrelease}.0"
+
+        apt::key { '72E0A4F6':
+          ensure => present,
+          source => "${repourl}/Release.key",
+        }
+
+        apt::sources_list { 'lldp':
+          ensure  => present,
+          content => "deb ${repourl}",
+        }
       }
     }
   }
