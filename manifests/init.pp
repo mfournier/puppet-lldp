@@ -7,7 +7,7 @@
 #
 #   include lldp
 #
-class lldp {
+class lldp inherits lldp::params {
 
   $baseurl = 'http://widehat.opensuse.org/repositories/home:/vbernat/'
 
@@ -38,15 +38,13 @@ class lldp {
 
   package { 'lldpd':
     ensure => present,
-    name   => $::operatingsystem ? {
-      /RedHat|CentOS/ => "lldpd.${::architecture}",
-      default         => 'lldpd',
-    },
+    name   => $lldp::params::package,
   }
 
   service { 'lldpd':
-    ensure  => running,
-    enable  => true,
-    require => Package['lldpd'],
+    ensure    => running,
+    enable    => true,
+    require   => Package['lldpd'],
+    hasstatus => $lldp::params::has_status,
   }
 }
