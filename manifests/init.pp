@@ -15,7 +15,7 @@ class lldp ($package_source = '') {
   include '::lldp::params'
 
   if $package_source == 'vbernat' {
-    $baseurl = 'http://widehat.opensuse.org/repositories/home:/vbernat/'
+    $baseurl = 'http://download.opensuse.org/repositories/home:/vbernat/'
 
     case $::operatingsystem {
       /RedHat|CentOS/ : {
