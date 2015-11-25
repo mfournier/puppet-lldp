@@ -20,8 +20,8 @@ class lldp ($package_source = '') {
     case $::operatingsystem {
       /RedHat|CentOS/ : {
         case $::operatingsystemmajrelease {
-          '7'    : { $repourl = "${baseurl}/RHEL_${::lsbmajdistrelease}" }
-          default: { $repourl = "${baseurl}/RedHat_RHEL-${::lsbmajdistrelease}" }
+          '7'    : { $repourl = "${baseurl}/RHEL_${::operatingsystemmajrelease}" }
+          default: { $repourl = "${baseurl}/RedHat_RHEL-${::operatingsystemmajrelease}" }
         }
 
         yumrepo { 'lldp':
